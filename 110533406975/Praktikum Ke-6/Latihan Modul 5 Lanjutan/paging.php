@@ -1,25 +1,29 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<title>Paging Data</title>
+	<title>Paging Data</title>
 </head>
 <body>
 <?php
 require_once './koneksi.php';
 //***************** Setup paging
 $sql = 'SELECT * FROM mahasiswa';
+
 $self = $_SERVER['PHP_SELF'];
 $page = isset($_GET['page']) ? $_GET['page'] : 0;
+
 // Jumlah link counter, misal (prev 1 2 3 next) = 3
 $link_num = 5;
 // Jumlah record per halaman
 $record_num = 5;
+
 // Item pertama yang akan ditampilkan
 $offset = $page ? ($page - 1) * $record_num : 0;
 $total_rows = mysql_num_rows(mysql_query($sql));
 $query = $sql. ' LIMIT ' . $offset . ', ' . $record_num;
 $result = mysql_query($query);
 $max_page = ceil($total_rows/$record_num);
+
 // Reset jika page tidak sesuai
 if ($page > $max_page || $page <= 0) {
 $page = 1;
@@ -27,18 +31,19 @@ $page = 1;
 //***************** Generate paging
 $paging = '';
 if($max_page > 1) {
-//*** Render link previous
-if ($page > 1) {
-$paging .= ' <a href="'.$self.'?page='.($page-1).'">previous</a>
+	//*** Render link previous
+	if ($page > 1) {
+	$paging .= ' <a href="'.$self.'?page='.($page-1).'">previous</a>
 ';
 } else {
 $paging .= ' previous ';
 }
+
 //*** Render link counter halaman
-for ($counter = 1; $counter <= $max_page; $counter += $link_num) {
-if ($page >= $counter) {
-$start = $counter;
-}
+	for ($counter = 1; $counter <= $max_page; $counter += $link_num) {
+	if ($page >= $counter) {
+	$start = $counter;
+	}
 }
 if ($max_page > $link_num) {
 $end = $start + $link_num;
@@ -75,18 +80,18 @@ $paging.= ' next ';
 $i = 1;
 while ($row = mysql_fetch_row($result)) { ?>
 <tr>
-<td>
-<?php echo $i;?>
-</td>
-<td>
-<?php echo $row[0];?>
-</td>
-<td>
-<?php echo $row[1];?>
-</td>
-<td>
-<?php echo $row[2];?>
-</td>
+	<td>
+		<?php echo $i;?>
+	</td>
+	<td>
+		<?php echo $row[0];?>
+	</td>
+	<td>
+		<?php echo $row[1];?>
+	</td>
+	<td>
+		<?php echo $row[2];?>
+	</td>
 </tr>
 <?php
 $i++;
